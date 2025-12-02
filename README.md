@@ -4,11 +4,9 @@
 
 🚀 **Live Demo**: https://vit-chennai-lost-and-found.web.app
 
-## Screenshots
-(You can add screenshots later if you want — not needed for full marks)
 
 ## Features
-- Google Sign-In (only @vitstudent.ac.in accounts)
+- Google Sign-In 
 - Post Lost or Found items instantly
 - Real-time feed with search & filters (All / Lost / Found / My Posts)
 - Gorgeous sidebar navigation
