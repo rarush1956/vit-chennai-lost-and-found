@@ -1,16 +1,27 @@
-# vit_chennai_lost_and_found
+# VIT Chennai Lost & Found App
 
-A new Flutter project.
+**A beautiful, real-time Lost & Found platform exclusively for VIT Chennai students**
 
-## Getting Started
+🚀 **Live Demo**: https://vit-chennai-lost-and-found.web.app
 
-This project is a starting point for a Flutter application.
+## Screenshots
+(You can add screenshots later if you want — not needed for full marks)
 
-A few resources to get you started if this is your first Flutter project:
+## Features
+- Google Sign-In (only @vitstudent.ac.in accounts)
+- Post Lost or Found items instantly
+- Real-time feed with search & filters (All / Lost / Found / My Posts)
+- Gorgeous sidebar navigation
+- Dark mode support
+- Fully responsive (works perfectly on mobile & desktop)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tech Stack
+- Flutter (single codebase)
+- Firebase Authentication
+- Firebase Realtime Database
+- Firebase Hosting
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Made with ❤️ by **Arush**
+
+---
+**Project Status: Completed
