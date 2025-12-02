@@ -1,0 +1,22 @@
+name: vit_chennai_lost_and_found
+description: A lost and found app for VIT Chennai
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^2.24.0
+  firebase_auth: ^4.15.0
+  firebase_database: ^10.5.0
+  google_sign_in: ^6.1.0
+  firebase_messaging: ^14.7.0
+  js: ^0.7.2
+  universal_html: ^2.3.0
+  intl: ^0.20.2
+
+flutter:
+  assets:
+    - web/google_sign_in.js

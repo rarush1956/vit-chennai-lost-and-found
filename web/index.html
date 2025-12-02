@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-signin-client_id" content="826536706665-o0lk455i5jk5cijc1s0h8or4fkcrr40c.apps.googleusercontent.com">
+  <title>VIT Chennai Lost & Found</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <div id="g_id_onload"
+       data-client_id="826536706665-08ec73c2b929ed4337d8f8.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse">
+  </div>
+
+  <script>
+    function handleCredentialResponse(response) {
+      // Send ID token to Flutter
+      if (window.flutter_inappwebview) {
+        window.flutter_inappwebview.callHandler('googleSignIn', response.credential);
+      }
+    }
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("flutter_service_worker.js");
+    }
+  </script>
+  <script src="main.dart.js" type="application/javascript"></script>
+</body>
+</html>
