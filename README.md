@@ -2,9 +2,6 @@
 
 **A beautiful, real-time Lost & Found platform exclusively for VIT Chennai students**
 
-🚀 **Live Demo**: https://vit-chennai-lost-and-found.web.app
-
-
 ## Features
 - Google Sign-In 
 - Post Lost or Found items instantly
