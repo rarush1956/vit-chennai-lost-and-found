@@ -29,7 +29,7 @@ class LostFoundApp extends StatelessWidget {
         title: 'VIT Lost & Found',
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light(useMaterial3: true).copyWith(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         ),
         darkTheme: ThemeData.dark(useMaterial3: true),
         home: const AuthWrapper(),
@@ -75,17 +75,17 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.search, size: 90, color: Colors.deepPurple),
+                  const Icon(Icons.location_on_rounded, size: 90, color: Colors.blue),
                   const SizedBox(height: 20),
                   const Text("VIT Lost & Found",
                       style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 40),
                   ElevatedButton.icon(
                     onPressed: () => _signIn(context),
-                    icon: const Icon(Icons.g_mobiledata, size: 32),
+                    icon: const Icon(Icons.login_rounded, size: 32),
                     label: const Text("Sign in with Google", style: TextStyle(fontSize: 18)),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -112,10 +112,10 @@ class _MainScreenState extends State<MainScreen> {
   final searchController = TextEditingController();
 
   static const List<Map<String, dynamic>> tabs = [
-    {"icon": Icons.all_inclusive, "label": "All Items", "type": null},
-    {"icon": Icons.search_off, "label": "Lost", "type": "Lost"},
-    {"icon": Icons.check_circle_outline, "label": "Found", "type": "Found"},
-    {"icon": Icons.person, "label": "My Posts", "type": "mine"},
+    {"icon": Icons.all_inclusive_rounded, "label": "All Items", "type": null},
+    {"icon": Icons.search_off_rounded, "label": "Lost", "type": "Lost"},
+    {"icon": Icons.check_circle_rounded, "label": "Found", "type": "Found"},
+    {"icon": Icons.person_rounded, "label": "My Posts", "type": "mine"},
   ];
 
   @override
@@ -126,10 +126,14 @@ class _MainScreenState extends State<MainScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Theme.of(context).brightness == Brightness.dark ? Icons.light_mode : Icons.dark_mode),
+            icon: Icon(Theme.of(context).brightness == Brightness.dark ? Icons.light_mode_rounded : Icons.dark_mode_rounded),
             onPressed: () {},
           ),
-          IconButton(icon: const Icon(Icons.logout), onPressed: () => FirebaseAuth.instance.signOut()),
+          IconButton(
+            icon: const Icon(Icons.logout_rounded),
+            tooltip: "Logout",
+            onPressed: () => FirebaseAuth.instance.signOut(),
+          ),
         ],
       ),
       drawer: Drawer(
@@ -139,13 +143,13 @@ class _MainScreenState extends State<MainScreen> {
               accountName: Text(user.displayName ?? "User"),
               accountEmail: Text(user.email ?? ""),
               currentAccountPicture: CircleAvatar(backgroundImage: NetworkImage(user.photoURL ?? "")),
-              decoration: const BoxDecoration(color: Colors.deepPurple),
+              decoration: const BoxDecoration(color: Colors.blue),
             ),
             ...tabs.asMap().entries.map((e) => ListTile(
                   leading: Icon(e.value["icon"]),
                   title: Text(e.value["label"]),
                   selected: selectedIndex == e.key,
-                  selectedTileColor: Colors.deepPurple.withOpacity(0.2),
+                  selectedTileColor: Colors.blue.withOpacity(0.2),
                   onTap: () {
                     setState(() => selectedIndex = e.key);
                     Navigator.pop(context);
@@ -155,10 +159,10 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.blue,
         onPressed: _showPostDialog,
         label: const Text("Post Item"),
-        icon: const Icon(Icons.add),
+        icon: const Icon(Icons.post_add_rounded),
       ),
       body: Column(
         children: [
@@ -168,7 +172,7 @@ class _MainScreenState extends State<MainScreen> {
               controller: searchController,
               decoration: InputDecoration(
                 hintText: "Search titles or description...",
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search_rounded),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
                 filled: true,
               ),
@@ -205,7 +209,6 @@ class _MainScreenState extends State<MainScreen> {
                   itemBuilder: (context, i) {
                     final item = list[i];
                     final isLost = item["category"] == "Lost";
-                    final isMine = item["userId"] == user.uid;
 
                     return Card(
                       elevation: 5,
@@ -213,7 +216,7 @@ class _MainScreenState extends State<MainScreen> {
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundColor: isLost ? Colors.red.shade100 : Colors.green.shade100,
-                          child: Icon(isLost ? Icons.search_off : Icons.check_circle,
+                          child: Icon(isLost ? Icons.search_off_rounded : Icons.check_circle_rounded,
                               color: isLost ? Colors.red : Colors.green),
                         ),
                         title: Text(item["title"] ?? "No title",
@@ -222,6 +225,8 @@ class _MainScreenState extends State<MainScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(item["description"] ?? ""),
+                            if (item["location"] != null && item["location"].toString().isNotEmpty)
+                              Text("📍 ${item["location"]}", style: const TextStyle(fontStyle: FontStyle.italic)),
                             const SizedBox(height: 6),
                             Text(
                               "— ${item["userName"] ?? "Anonymous"} • ${DateFormat('dd MMM • HH:mm').format(DateTime.fromMillisecondsSinceEpoch(item["timestamp"] ?? 0))}",
@@ -229,7 +234,6 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                           ],
                         ),
-                        trailing: isMine ? const Icon(Icons.person, color: Colors.deepPurple) : null,
                       ),
                     );
                   },
@@ -245,6 +249,7 @@ class _MainScreenState extends State<MainScreen> {
   void _showPostDialog() {
     final titleCtrl = TextEditingController();
     final descCtrl = TextEditingController();
+    final locationCtrl = TextEditingController();
     String category = "Lost";
 
     showDialog(
@@ -263,6 +268,14 @@ class _MainScreenState extends State<MainScreen> {
                 decoration: const InputDecoration(labelText: "Description", border: OutlineInputBorder()),
                 maxLines: 4),
             const SizedBox(height: 12),
+            TextField(
+                controller: locationCtrl,
+                decoration: const InputDecoration(
+                  labelText: "Location",
+                  hintText: "e.g., TT Block, Canteen, Library",
+                  border: OutlineInputBorder(),
+                )),
+            const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               value: category,
               decoration: const InputDecoration(labelText: "Category", border: OutlineInputBorder()),
@@ -274,12 +287,13 @@ class _MainScreenState extends State<MainScreen> {
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             onPressed: () {
               if (titleCtrl.text.trim().isNotEmpty) {
                 db.push().set({
                   "title": titleCtrl.text.trim(),
                   "description": descCtrl.text.trim(),
+                  "location": locationCtrl.text.trim(),
                   "category": category,
                   "userId": user.uid,
                   "userName": user.displayName,
